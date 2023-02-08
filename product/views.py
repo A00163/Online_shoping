@@ -1,5 +1,10 @@
 from django.shortcuts import render
+from django.views import View
 
 
-def index(request):
-    return render(request, 'product/index.html')
+class HomeView(View):
+    def get(self, request):
+        return render(request, 'product/index.html')
+
+    def post(self, request):
+        return render(request, 'product/index.html')

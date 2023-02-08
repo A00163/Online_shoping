@@ -13,6 +13,8 @@ class Category(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=30)
     price = models.IntegerField()
+    quantity = models.IntegerField()
+    image = models.ImageField(upload_to='product/static/images')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -21,6 +23,7 @@ class Product(models.Model):
 
 class Discount(models.Model):
     percent_discount = models.IntegerField()
+    value_discount = models.IntegerField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -29,4 +32,4 @@ class Discount(models.Model):
 
 class DiscountCode(models.Model):
     discount_code = models.CharField(max_length=15)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -10,6 +10,7 @@ class Order(models.Model):
     def __str__(self):
         return self.customer.first_name
 
+
 class OrderItems(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
