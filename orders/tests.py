@@ -1,14 +1,14 @@
 from django.test import TestCase
 
-from customers.models import Customer
+from accounts.models import User
 from orders.models import OrderItems, Order
 from product.models import Product, Category
 
 
 class OrderTestCase(TestCase):
     def test_order(self):
-        customer = Customer.objects.create(first_name='atefe', last_name='mohammadi',
-                                           email='aalimohammadi00163@gmail.com')
+        customer = User.objects.create(first_name='atefe', last_name='mohammadi',
+                                       email='aalimohammadi00163@gmail.com')
         customer.save()
         order = Order(customer=customer)
         order.save()
@@ -21,8 +21,8 @@ class OrderItemTestCase(TestCase):
         category.save()
         product1 = Product.objects.create(title='flash', price=600, category=category)
         product1.save()
-        customer = Customer.objects.create(first_name='sara', last_name='mohammadi',
-                                           email='aalimohammadi00163@gmail.com')
+        customer = User.objects.create(first_name='sara', last_name='mohammadi',
+                                       email='aalimohammadi00163@gmail.com')
         customer.save()
         order = Order(customer=customer)
         order.save()
