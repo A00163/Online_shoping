@@ -17,6 +17,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('product:category_filter', args=[self.slug, ])
+
 
 class Product(models.Model):
     title = models.CharField(max_length=200)

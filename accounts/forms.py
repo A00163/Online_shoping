@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import User
+from .models import User, OtpCode
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 
@@ -56,14 +56,15 @@ class UserRegistrationForm(forms.Form):
         user = User.objects.filter(phone_number=phone).exists()
         if user:
             raise ValidationError('this phone number is already exist')
+        OtpCode.objects.filter(phone_number=phone).delete()
         return phone
 
-    def clean(self):
-        cd = super().clean()
-        p1 = cd.get('password1')
-        p2 = cd.get('password2')
-        if p1 and p2 and p1 != p2:
-            raise ValidationError('password must match')
+    # def clean(self):
+    #     cd = super().clean()
+    #     p1 = cd.get('password1')
+    #     p2 = cd.get('password2')
+    #     if p1 and p2 and p1 != p2:
+    #         raise ValidationError('password must match')
 
 
 class UserLoginForm(forms.Form):
