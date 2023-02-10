@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm
@@ -55,8 +56,11 @@ class UserLoginView(View):
             user = authenticate(request, phone_number=cd['phone'], password=cd['password'])
             if user is not None:
                 login(request, user)
-                messages.success(request, 'you logged in successfully', 'info')
-                return redirect('product:home')
+                if user.is_staff():
+                    return redirect(to=reverse('admin:index'))
+                else:
+                    messages.success(request, 'you logged in successfully', 'info')
+                    return redirect('product:home')
             messages.error(request, 'phone or password is wrong', 'warning')
         return render(request, self.template_name, {'form': form})
 
