@@ -10,7 +10,8 @@ def send_otp_code(phone_number, code):
             'message': f'Your verification code: {code}'
         }
         response = api.sms_send(params)
-        print(response)
+        # print(response)
+        print(params.message)
     except APIException as e:
         print(e)
     except HTTPException as e:
