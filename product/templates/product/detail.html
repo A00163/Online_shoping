@@ -5,9 +5,9 @@
     <p>{{ product.price }} </p>
     <img src="{{ product.image.url }}" style="width: 300px;">
     <p>{{ product.description }}</p><br/><br/>
-{#    <form action="" method="post">#}
-{#      { % csrf_token % }#}
-{#      {{ form }}#}
-{#       <input type="submit" value="add to cart">#}
-{#    </form>#}
+    <form action="{% url 'orders:cart_add' product.id %}" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="add to cart">
+    </form>
 {% endblock %}

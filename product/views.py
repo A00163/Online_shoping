@@ -24,5 +24,5 @@ class ProductDetailView(View):
 
     def get(self, request, slug):
         product = get_object_or_404(Product, slug=slug)
-        # form1 = CartAddForm()
-        return render(request, self.template_name, {'product': product}, )
+        form = CartAddForm()
+        return render(request, self.template_name, {'product': product, 'form': form})
