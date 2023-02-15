@@ -11,7 +11,7 @@ def send_otp_code(phone_number, code):
         }
         response = api.sms_send(params)
         # print(response)
-        print(params.message)
+        print(params.values())
     except APIException as e:
         print(e)
     except HTTPException as e:
