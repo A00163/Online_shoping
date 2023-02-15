@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from django.contrib.auth.models import User
@@ -21,6 +22,18 @@ class Category(models.Model):
         return reverse('product:category_filter', args=[self.slug, ])
 
 
+class Discount(models.Model):
+    amount = models.CharField(max_length=20, )
+    TYPES = (
+        ('p', 'percent'),
+        ('c', 'cash')
+    )
+    type1 = models.CharField(max_length=1, choices=TYPES)
+
+    def __str__(self):
+        return f'type: {self.type1}, amount: {self.amount}'
+
+
 class Product(models.Model):
     title = models.CharField(max_length=200)
     price = models.IntegerField()
@@ -32,6 +45,8 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=200, unique=True)
+    discount = models.ForeignKey(Discount, blank=True, default=None, on_delete=models.DO_NOTHING)
+    discount_price = models.IntegerField(blank=True, null=True, default=None)
 
     class Meta:
         ordering = ('title',)
@@ -39,19 +54,17 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+    def is_price_after_discount(self):
+        if self.discount and self.discount.type1 == 'p':
+            new_price = self.price - (self.price * int(self.discount.amount)) / 100
+            self.discount_price = new_price
+            return True
+        elif self.discount and self.discount.type1 == 'c':
+            new_price = self.price - int(self.price)
+            self.discount_price = new_price
+            return True
+        elif self.discount is None:
+            return False
+
     def get_absolute_url(self):
         return reverse('product:product_detail', args=[self.slug, ])
-
-
-class Discount(models.Model):
-    percent_discount = models.IntegerField()
-    value_discount = models.IntegerField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.percent_discount)
-
-
-class DiscountCode(models.Model):
-    discount_code = models.CharField(max_length=15)
-    order = models.ForeignKey(Product, on_delete=models.CASCADE)
