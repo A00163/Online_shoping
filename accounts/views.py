@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm, EditUserForm
+from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm, EditUserForm, PasswordChangingForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 from utils import send_otp_code
@@ -115,3 +116,9 @@ class EditUserView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, 'profile edited successfully', 'success')
         return redirect('product:home')
+
+
+class ChangePasswordView(PasswordChangeView):
+    form_class = PasswordChangingForm
+    success_url = reverse_lazy('product:home')
+

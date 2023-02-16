@@ -7,6 +7,6 @@
        {{ form.as_p }}
        <input class="btn btn-primary" type="submit" value="edit">
        </form>
-       <a href=""> change password</a>
+       <a href="{% url 'accounts:change_password' %}"> change password</a>
     </div>
 {% endblock %}

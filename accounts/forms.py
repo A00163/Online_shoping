@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import User, OtpCode
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, PasswordChangeForm
 
 
 class UserCreationForm(forms.ModelForm):
@@ -85,3 +85,12 @@ class EditUserForm(forms.ModelForm):
             # 'phone_number': forms.TextInput(attrs={'class:': 'form-control'}),
             # 'full_name': forms.TextInput(attrs={'class:': 'form-control'}),
         }
+
+class PasswordChangingForm(PasswordChangeForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password1', 'new_password2')

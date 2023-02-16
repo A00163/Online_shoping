@@ -9,5 +9,7 @@ urlpatterns = [
     path('login/', views.UserLoginView.as_view(), name='user_login'),
     path('logout/', views.UserLogoutView.as_view(), name='user_logout'),
     path('admin/', admin.site.urls, name='admin'),
-    path('edit_user/', views.EditUserView.as_view(), name='edit_user')
+    path('edit_user/', views.EditUserView.as_view(), name='edit_user'),
+    path('password/', views.ChangePasswordView.as_view(template_name='accounts/change_password.html'),
+         name='change_password')
 ]
