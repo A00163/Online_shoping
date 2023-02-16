@@ -73,3 +73,15 @@ class UserLoginForm(forms.Form):
 
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField()
+
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email', 'phone_number', 'full_name']
+
+        widgets = {
+            'email': forms.EmailInput(attrs={'class:': 'form-control'}),
+            # 'phone_number': forms.TextInput(attrs={'class:': 'form-control'}),
+            # 'full_name': forms.TextInput(attrs={'class:': 'form-control'}),
+        }

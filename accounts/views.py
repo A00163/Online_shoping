@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm
+from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm, EditUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -98,4 +98,20 @@ class UserRegisterVerifyCode(View):
             else:
                 messages.error(request, 'this code is wrong', 'danger')
                 return redirect('accounts:verify_code')
+        return redirect('product:home')
+
+
+class EditUserView(LoginRequiredMixin, View):
+    template_name = 'accounts/edit_profile.html'
+    form = EditUserForm
+
+    def get(self, request):
+        form = self.form(instance=request.user)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'profile edited successfully', 'success')
         return redirect('product:home')

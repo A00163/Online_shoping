@@ -8,5 +8,6 @@ urlpatterns = [
     path('verify/', views.UserRegisterVerifyCode.as_view(), name='verify_code'),
     path('login/', views.UserLoginView.as_view(), name='user_login'),
     path('logout/', views.UserLogoutView.as_view(), name='user_logout'),
-    path('admin/', admin.site.urls, name='admin')
+    path('admin/', admin.site.urls, name='admin'),
+    path('edit_user/', views.EditUserView.as_view(), name='edit_user')
 ]
