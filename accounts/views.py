@@ -27,13 +27,14 @@ class UserRegisterView(View):
             random_code = random.randint(1000, 9999)
             cd = form.cleaned_data
             send_otp_code(cd['phone'], random_code)
-            OtpCode.objects.create(phone_number=cd['phone'], code=random_code)
+            otp_code = OtpCode.objects.create(phone_number=cd['phone'], code=random_code)
             request.session['user_registration_info'] = {
                 'phone_number': cd['phone'], 'email': cd['email'],
                 'full_name': cd['full_name'],
                 'password': cd['password']
             }
             messages.success(request, 'we sent you a code', 'success')
+            print(otp_code.code)
             return redirect('accounts:verify_code')
         return render(request, self.template_name, {'form': form})
 
@@ -162,19 +163,20 @@ class RemoveAddressView(View):
         return redirect(self.template_name)
 
 
-class AddAddressView(View):
+class AddAddressView(LoginRequiredMixin, View):
     template_name = 'accounts/add_address.html'
     form = AddressForm
 
     def get(self, request):
-
-        form = self.form(initial={'customer': request.user})
+        form = self.form()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = self.form(request.POST, initial={'customer': request.user})
+        form = self.form(request.POST)
         if form.is_valid():
-            form.save()
+            cd = form.cleaned_data
+            Address.objects.create(city_name=cd['city_name'], street_name=cd['street_name'], plock_no=cd['plock_no'],
+                                   customer=request.user)
             messages.success(request, 'new address added successfully', 'success')
         return redirect('accounts:addresses_user')
 
