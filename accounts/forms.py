@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import User, OtpCode
+from .models import User, OtpCode, Address
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, PasswordChangeForm
 
 
@@ -82,15 +82,28 @@ class EditUserForm(forms.ModelForm):
 
         widgets = {
             'email': forms.EmailInput(attrs={'class:': 'form-control'}),
-            # 'phone_number': forms.TextInput(attrs={'class:': 'form-control'}),
-            # 'full_name': forms.TextInput(attrs={'class:': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class:': 'form-control'}),
+            'full_name': forms.TextInput(attrs={'class:': 'form-control'}),
         }
 
+
 class PasswordChangingForm(PasswordChangeForm):
-    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
-    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
-    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}))
 
     class Meta:
         model = User
         fields = ('old_password', 'new_password1', 'new_password2')
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['city_name', 'street_name', 'plock_no']
+
+        widgets = {
+            'city_name': forms.TextInput(attrs={'class:': 'form-control'}),
+            'street_name': forms.TextInput(attrs={'class:': 'form-control'}),
+            'plock_no': forms.TextInput(attrs={'class:': 'form-control'}),
+        }

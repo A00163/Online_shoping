@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <br/><br/>
+    <h3 class="text-break">Orders history</h3>
+    <br/>
+    <table class="table table-dark table-striped">
+       <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">paid</th>
+          <th scope="col">created_date</th>
+          <th scope="col">updated_date</th>
+       </tr>
+     </thead>
+    <tbody>
+    {% for order  in orders  %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ order.paid }}</td>
+      <td>{{ order.created }}</td>
+      <td>{{ order.updated }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
+

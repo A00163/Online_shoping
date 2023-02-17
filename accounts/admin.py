@@ -3,16 +3,12 @@ from .models import User, Address
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserCreationForm, UserChangeForm
 from .models import User, OtpCode
-from django.contrib.auth.models import Group
 
 
 @admin.register(OtpCode)
 class OtpCodeAdmin(admin.ModelAdmin):
     list_display = ('phone_number', 'code', 'created')
 
-
-# admin.register(Customer)(admin.ModelAdmin)
-# admin.register(Address)(admin.ModelAdmin)
 
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
@@ -23,7 +19,8 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
         ('Main', {'fields': ('email', 'phone_number', 'full_name', 'password')}),
-        ('Permissions', {'fields': ('is_active', 'is_admin', 'is_superuser', 'last_login', 'groups', 'user_permissions')})
+        ('Permissions',
+         {'fields': ('is_active', 'is_admin', 'is_superuser', 'last_login', 'groups', 'user_permissions')})
     )
 
     add_fieldsets = (
@@ -35,3 +32,4 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+admin.register(Address)(admin.ModelAdmin)

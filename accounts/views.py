@@ -2,14 +2,16 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm, EditUserForm, PasswordChangingForm
+from .forms import UserRegistrationForm, UserLoginForm, VerifyCodeForm, EditUserForm, PasswordChangingForm, \
+    AddressForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 from utils import send_otp_code
-from .models import OtpCode, User
+from .models import OtpCode, User, Address
+from orders.models import Order
 
 
 class UserRegisterView(View):
@@ -122,3 +124,66 @@ class ChangePasswordView(PasswordChangeView):
     form_class = PasswordChangingForm
     success_url = reverse_lazy('product:home')
 
+
+class AddressUserView(View):
+    template_name = 'accounts/addresses.html'
+
+    def get(self, request):
+        context = {
+            "addresses": Address.objects.filter(customer_id=request.user.id)
+        }
+        return render(request, self.template_name, context)
+
+
+class EditAddressView(View):
+    template_name = 'accounts/edit_address.html'
+    form = AddressForm
+
+    def get(self, request, address_id):
+        address = Address.objects.get(pk=address_id)
+        form = self.form(instance=address)
+        return render(request, self.template_name, {'address': address, 'form': form})
+
+    def post(self, request, address_id):
+        address = Address.objects.get(pk=address_id)
+        form = self.form(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'address edited successfully', 'success')
+        return redirect('accounts:addresses_user')
+
+
+class RemoveAddressView(View):
+    template_name = 'accounts:addresses_user'
+
+    def get(self, request, address_id):
+        address = Address.objects.get(pk=address_id)
+        address.delete()
+        return redirect(self.template_name)
+
+
+class AddAddressView(View):
+    template_name = 'accounts/add_address.html'
+    form = AddressForm
+
+    def get(self, request):
+
+        form = self.form(initial={'customer': request.user})
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form(request.POST, initial={'customer': request.user})
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'new address added successfully', 'success')
+        return redirect('accounts:addresses_user')
+
+
+class OrdersHistoryView(View):
+    template_name = 'accounts/orders.html'
+
+    def get(self, request):
+        context = {
+            "orders": Order.objects.filter(user_id=request.user.id)
+        }
+        return render(request, self.template_name, context)

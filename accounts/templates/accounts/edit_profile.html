@@ -8,5 +8,9 @@
        <input class="btn btn-primary" type="submit" value="edit">
        </form>
        <a href="{% url 'accounts:change_password' %}"> change password</a>
+        <br>
+       <a href="{% url 'accounts:addresses_user' %}"> Addresses</a>
+        <br>
+       <a href="{% url 'accounts:orders_history' %}"> Orders history</a>
     </div>
 {% endblock %}

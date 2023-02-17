@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <br/><br/>
+    <h3 class="text-break">Addresses</h3>
+    <br/>
+    <table class="table table-dark table-striped">
+       <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">City</th>
+          <th scope="col">Street</th>
+          <th scope="col">Plaque</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Remove</th>
+       </tr>
+     </thead>
+    <tbody>
+    {% for address  in addresses  %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ address.city_name }}</td>
+      <td>{{ address.street_name }}</td>
+      <td>{{ address.plock_no }}</td>
+      <td><a href="{% url 'accounts:edit_address' address.id  %}">edit</a></td>
+      <td><a href="{% url 'accounts:remove_address' address.id  %}">remove</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    <br>
+    <a href="{% url 'accounts:add_address'  %}">add new address</a>
+{% endblock %}
+
