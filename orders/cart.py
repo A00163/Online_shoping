@@ -17,8 +17,10 @@ class Cart:
         cart = self.cart.copy()
         for product in products:
             cart[str(product.id)]['product'] = product
+            cart[str(product.id)]['id_product'] = product.id
         for item in cart.values():
             item['total_price'] = int(item['price']) * item['quantity']
+            # item['id'] = cart['product']
             yield item
 
     def __len__(self):
