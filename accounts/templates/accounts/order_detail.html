@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <br/><br/>
+    <h3 class="text-break">Orders detail</h3>
+    <br/>
+    <table class="table table-dark table-striped">
+       <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">product</th>
+          <th scope="col">price</th>
+          <th scope="col">quantity</th>
+       </tr>
+     </thead>
+    <tbody>
+    {% for item  in order_items  %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ item.product }}</td>
+      <td>{{ item.price }}</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
+
