@@ -1,11 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
     <h3>Checkout</h3>
-    <p>Total: {{ order.get_total_price }} </p>
+    <p class="fw-bold">TotalPrice: {{ order.get_total_price }} </p>
     <br><br>
     <form action="{% url 'orders:apply_coupon' order.id %}" method="post">
       {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="apply">
+       <div style="alignment: left">
+           {{ form.as_p }}
+           <input class="btn btn-primary" type="submit" value="apply">
+       </div>
     </form>
+    <label>
+        <select name="addresses" style="width:300px">
+           {% for address in addresses %}
+               <option> {{ address }} </option>
+               {{address}}
+           {% endfor %}
+         </select>
+    </label>
+    <a href="{% url 'product:home' %}" class="btn btn-primary">pay</a>
+
 {% endblock %}

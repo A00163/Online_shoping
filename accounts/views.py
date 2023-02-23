@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 from utils import send_otp_code
 from .models import OtpCode, User, Address
-from orders.models import Order
+from orders.models import Order, OrderItems
 
 
 class UserRegisterView(View):
@@ -187,5 +187,16 @@ class OrdersHistoryView(View):
     def get(self, request):
         context = {
             "orders": Order.objects.filter(user_id=request.user.id)
+        }
+        return render(request, self.template_name, context)
+
+
+class OrdersDetailView(LoginRequiredMixin, View):
+    template_name = 'accounts/order_detail.html'
+
+    def get(self, request, order_id):
+        order = Order.objects.get(pk=order_id)
+        context = {
+            "order_items": OrderItems.objects.filter(order_id=order.id)
         }
         return render(request, self.template_name, context)

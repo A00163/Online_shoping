@@ -16,6 +16,7 @@ urlpatterns = [
     path('addresses/edit_address/<int:address_id>/', views.EditAddressView.as_view(), name='edit_address'),
     path('addresses/remove_address/<int:address_id>/', views.RemoveAddressView.as_view(), name='remove_address'),
     path('addresses/add_address/', views.AddAddressView.as_view(), name='add_address'),
-    path('orders_history/', views.OrdersHistoryView.as_view(), name='orders_history')
+    path('orders_history/', views.OrdersHistoryView.as_view(), name='orders_history'),
+    path('detail_order/<int:order_id>/', views.OrdersDetailView.as_view(), name='detail_order')
 
 ]

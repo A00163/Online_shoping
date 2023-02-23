@@ -13,6 +13,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
 
+    # avatar = models.ImageField(upload_to='static')
     def __str__(self):
         return self.email
 
@@ -25,6 +26,9 @@ class Address(models.Model):
     street_name = models.CharField(max_length=30)
     plock_no = models.IntegerField()
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.city_name}, {self.street_name}'
 
 
 class OtpCode(models.Model):

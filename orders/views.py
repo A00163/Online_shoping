@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+
+from accounts.models import Address
 from product.models import Product
 from .cart import Cart
 from .forms import CartAddForm, CouponForm
@@ -7,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Order, OrderItems, Coupon
 import datetime
 from django.contrib import messages
+
 
 class CartView(View):
     template_name = 'orders/cart.html'
@@ -23,7 +26,7 @@ class CartAddView(View):
         form = CartAddForm(request.POST)
         if form.is_valid():
             cart.add(product, form.cleaned_data['quantity'])
-        return redirect('orders:cart')
+        return redirect('product:home')
 
 
 class CartRemoveView(View):
@@ -40,7 +43,12 @@ class OrderDetailView(LoginRequiredMixin, View):
 
     def get(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        return render(request, self.template_name, {'order': order, 'form': self.form})
+        addresses = Address.objects.filter(customer_id=request.user.id)
+
+        # context = {
+        #     "addresses": Address.objects.filter(customer_id=request.user.id)
+        # }
+        return render(request, self.template_name, {'order': order, 'form': self.form, 'addresses': addresses})
 
 
 class OrderCreateView(LoginRequiredMixin, View):
@@ -49,11 +57,17 @@ class OrderCreateView(LoginRequiredMixin, View):
     def get(self, request):
         cart = Cart(request)
         order = Order.objects.create(user=request.user)
+        order.save()
         for item in cart:
-            OrderItems.objects.create(order=order, product=item['product'], price=item['price'],
-                                      quantity=item['quantity'])
+            order_item = OrderItems.objects.create(product=item['product'], order=order, price=item['price'],
+                                                   quantity=item['quantity'])
+            order_item.save()
+
         cart.clear()
         return redirect(self.template_name, order.id)
+
+# class ClearCartViews(View):
+#     def get(self, request):
 
 
 class CouponView(LoginRequiredMixin, View):
@@ -73,5 +87,3 @@ class CouponView(LoginRequiredMixin, View):
             order.discount = coupon.discount
             order.save()
         return redirect('orders:order_detail', order_id)
-
-

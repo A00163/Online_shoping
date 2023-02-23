@@ -10,6 +10,7 @@
           <th scope="col">paid</th>
           <th scope="col">created_date</th>
           <th scope="col">updated_date</th>
+          <th scope="col">Detail</th>
        </tr>
      </thead>
     <tbody>
@@ -19,6 +20,8 @@
       <td>{{ order.paid }}</td>
       <td>{{ order.created }}</td>
       <td>{{ order.updated }}</td>
+      <td><a href="{% url 'accounts:detail_order' order.id %}">detail</a></td>
+
     </tr>
     {% endfor %}
     </tbody>
