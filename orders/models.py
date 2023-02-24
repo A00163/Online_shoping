@@ -10,11 +10,11 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
     discount = models.IntegerField(blank=True, null=True, default=None)
-    # TYPES = (
-    #     ('Posted', 'posted'),
-    #     ('Packing', 'packing')
-    # )
-    # status = models.CharField(max_length=10, choices=TYPES, blank=True)
+    TYPES = (
+        ('Posted', 'posted'),
+        ('Packing', 'packing')
+    )
+    status = models.CharField(max_length=10, choices=TYPES, blank=True, default='packing')
 
     class Meta:
         ordering = ('paid', '-updated')

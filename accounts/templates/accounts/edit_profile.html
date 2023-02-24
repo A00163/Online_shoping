@@ -2,6 +2,10 @@
 {% block content %}
     <br><br>
     <div class="form-group">
+    {% if request.user.avatar %}
+      <img src="{{ request.user.avatar.url }}" class="card-img-top" style="width: 250px" >
+    {% endif %}
+    <br><br>
       <form action="" method="post">
        {% csrf_token %}
        {{ form.as_p }}

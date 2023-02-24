@@ -81,7 +81,7 @@
 						<li class="active"><a href="{% url "product:home" %}">Home</a></li>
                         {% if request.user.is_authenticated %}
                         <li><a href="{% url "accounts:user_logout" %}">Logout</a></li>
-                        <li><a href="{% url "accounts:edit_user" %}">Edit Profile</a></li>
+                        <li><a href="{% url "accounts:edit_user"%} ">Edit Profile</a></li>
                         {% else %}
 						<li><a href="{% url "accounts:user_register" %}">Signup</a></li>
 						<li><a href="{% url "accounts:user_login" %}">Login</a></li>

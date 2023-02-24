@@ -12,8 +12,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['email', 'full_name']
+    avatar = models.ImageField(upload_to='avatar/%Y/%m/%d/', blank=True)
 
-    # avatar = models.ImageField(upload_to='static')
     def __str__(self):
         return self.email
 

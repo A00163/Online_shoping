@@ -78,12 +78,12 @@ class VerifyCodeForm(forms.Form):
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'phone_number', 'full_name']
+        fields = ['email', 'phone_number', 'full_name', 'avatar']
 
         widgets = {
             'email': forms.EmailInput(attrs={'class:': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class:': 'form-control'}),
-            'full_name': forms.TextInput(attrs={'class:': 'form-control'}),
+            'user_name': forms.TextInput(attrs={'class:': 'form-control'}),
         }
 
 

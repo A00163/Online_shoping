@@ -109,7 +109,7 @@ class EditUserView(LoginRequiredMixin, View):
     template_name = 'accounts/edit_profile.html'
     form = EditUserForm
 
-    def get(self, request):
+    def get(self, request,):
         form = self.form(instance=request.user)
         return render(request, self.template_name, {'form': form})
 
@@ -118,7 +118,7 @@ class EditUserView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             messages.success(request, 'profile edited successfully', 'success')
-        return redirect('product:home')
+        return render(request, self.template_name, {'form': form})
 
 
 class ChangePasswordView(PasswordChangeView):
