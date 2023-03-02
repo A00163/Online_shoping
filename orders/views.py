@@ -96,3 +96,13 @@ class CouponView(LoginRequiredMixin, View):
             order.save()
 
             return redirect('orders:order_detail', order_id)
+
+
+class Pay(LoginRequiredMixin, View):
+    def get(self, request):
+        addresses = Address.objects.filter(customer_id=request.user.id)
+        if len(addresses) == 0:
+            messages.error(request, 'you have not any address', 'danger')
+            return redirect('accounts:addresses_user')
+        else:
+            return redirect('product:home')
