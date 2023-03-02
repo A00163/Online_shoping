@@ -33,14 +33,11 @@ class OrderCreateAPIView(APIView):
 
     def post(self, request):
         cart = Cart(request)
-        print(cart.cart.items())
         order = Order.objects.create(user=request.user)
         order.save()
         for item in cart:
-            print(item)
             # product = get_object_or_404(Product, id=int(item['id']))
             id_product = int(item['id_product'])
-            print(id_product)
             product = Product.objects.get(pk=id_product)
             quantity = int(item['quantity'])
             price = int(item['price'])
@@ -51,6 +48,19 @@ class OrderCreateAPIView(APIView):
         data = {'message': f'your order was registered successfully.\n order cod:{order.id}'}
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-# class OrderDetailAPIView:
-#     pass
+
+class OrderDetailAPIView(APIView):
+    serializer = OrderItemSerializer
+    permissions = [IsAuthenticated]
+
+    def post(self, request, order_id):
+        print('hi')
+        order = get_object_or_404(Order, id=order_id)
+        print(order)
+        items = (order.items.all())
+        for i in items:
+            print(i.order, i.product, i.price, i.quantity)
+        ser_data = OrderItemSerializer(order.items.all(), many=True)
+        return Response(ser_data.data, status=status.HTTP_200_OK)
+
 
