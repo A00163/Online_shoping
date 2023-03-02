@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -117,6 +119,14 @@ class EditUserView(LoginRequiredMixin, View):
         form = self.form(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            if request.FILES.get('avatar', None) is not None:
+                try:
+                    os.remove(request.user.avatar.url)
+                except Exception as e:
+                    print('Exception in removing old profile image: ', e)
+                request.user.avatar = request.FILES['avatar']
+                request.user.save()
+            # return redirect('user:profile', id=request.user.id)
             messages.success(request, 'profile edited successfully', 'success')
         return render(request, self.template_name, {'form': form})
 

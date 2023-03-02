@@ -18,6 +18,13 @@ class CartView(View):
         cart = Cart(request)
         return render(request, self.template_name, {'cart': cart})
 
+    def post(self, request):
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=request.POST.get('item_id'))
+        quantity = int(request.POST.get('quantity'))
+        cart.update(product, quantity)
+        return redirect('orders:cart')
+
 
 class CartAddView(View):
     def post(self, request, product_id):
@@ -66,6 +73,7 @@ class OrderCreateView(LoginRequiredMixin, View):
         cart.clear()
         return redirect(self.template_name, order.id)
 
+
 # class ClearCartViews(View):
 #     def get(self, request):
 
@@ -86,4 +94,5 @@ class CouponView(LoginRequiredMixin, View):
             order = Order.objects.get(id=order_id)
             order.discount = coupon.discount
             order.save()
-        return redirect('orders:order_detail', order_id)
+
+            return redirect('orders:order_detail', order_id)

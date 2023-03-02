@@ -81,9 +81,10 @@ class EditUserForm(forms.ModelForm):
         fields = ['email', 'phone_number', 'full_name', 'avatar']
 
         widgets = {
-            'email': forms.EmailInput(attrs={'class:': 'form-control'}),
+            'email': forms.TextInput(attrs={'class:': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class:': 'form-control'}),
             'user_name': forms.TextInput(attrs={'class:': 'form-control'}),
+            'avatar' : forms.FileInput(attrs={'class': 'form-control-file'})
         }
 
 

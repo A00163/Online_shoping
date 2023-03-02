@@ -1,20 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
     <br><br>
+     <div>
+           <div style="display:inline-block">
+               {% if request.user.avatar %}
+                   <img src="{{ request.user.avatar.url }}" class="card-img-top" style="width: 250px" >
+               {% endif %}
+           </div>
+           <div style="display:inline-block">
+
+                    <a class="btn-secondary" role="button" href="{% url 'accounts:change_password' %}">
+
+                     <span class="btn btn-default btn-dark">
+                         change password
+                     </span>
+                   </a>
+                <br>
+                <br>
+               <a href="{% url 'accounts:addresses_user' %}">
+
+                   <span class="btn btn-default btn-dark">
+                          Addresses
+                   </span>
+               </a>
+                <br>
+                <br>
+               <a href="{% url 'accounts:orders_history' %}">
+
+                    <span class="btn btn-default btn-dark">
+                          Orders history
+                   </span>
+               </a>
+        </div>
+        </div>
     <div class="form-group">
-    {% if request.user.avatar %}
-      <img src="{{ request.user.avatar.url }}" class="card-img-top" style="width: 250px" >
-    {% endif %}
     <br><br>
-      <form action="" method="post">
+      <form action="" method="post" enctype="multipart/form-data">
        {% csrf_token %}
        {{ form.as_p }}
-       <input class="btn btn-primary" type="submit" value="edit">
+       <input class="btn btn-secondary" type="submit" value="Edit profile">
        </form>
-       <a href="{% url 'accounts:change_password' %}"> change password</a>
-        <br>
-       <a href="{% url 'accounts:addresses_user' %}"> Addresses</a>
-        <br>
-       <a href="{% url 'accounts:orders_history' %}"> Orders history</a>
+
     </div>
 {% endblock %}
