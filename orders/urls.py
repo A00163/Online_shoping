@@ -9,6 +9,6 @@ urlpatterns = [
     path('cart/add/<int:product_id>/', views.CartAddView.as_view(), name='cart_add'),
     path('cart/remove/<int:product_id>/', views.CartRemoveView.as_view(), name='cart_remove'),
     path('apply/<int:order_id>/', views.CouponView.as_view(), name='apply_coupon'),
-    path('pay/', views.Pay.as_view(), name='pay'),
+    path('pay/<int:order_id>/', views.Pay.as_view(), name='pay'),
     path('api/v1/', include('orders.api.v1.urls')),
 ]

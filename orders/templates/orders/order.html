@@ -19,6 +19,6 @@
          </select>
     </label>
 
-    <a href="{% url 'orders:pay' %}" class="btn btn-primary">pay</a>
+    <a href="{% url 'orders:pay' order.id %}" class="btn btn-primary">pay</a>
 
 {% endblock %}
