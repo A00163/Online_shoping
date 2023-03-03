@@ -100,14 +100,15 @@ class CouponView(LoginRequiredMixin, View):
 
 class Pay(LoginRequiredMixin, View):
     def get(self, request, order_id):
-        order = get_object_or_404(Order, id=order_id)
-        order.paid = True
-        order.save()
+
         addresses = Address.objects.filter(customer_id=request.user.id)
         if len(addresses) == 0:
             messages.error(request, 'you have not any address', 'danger')
             return redirect('accounts:addresses_user')
         else:
+            order = get_object_or_404(Order, id=order_id)
+            order.paid = True
+            order.save()
             return redirect('product:home')
 
 
