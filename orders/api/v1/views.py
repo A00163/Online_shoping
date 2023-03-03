@@ -54,12 +54,8 @@ class OrderDetailAPIView(APIView):
     permissions = [IsAuthenticated]
 
     def post(self, request, order_id):
-        print('hi')
         order = get_object_or_404(Order, id=order_id)
-        print(order)
         items = (order.items.all())
-        for i in items:
-            print(i.order, i.product, i.price, i.quantity)
         ser_data = OrderItemSerializer(order.items.all(), many=True)
         return Response(ser_data.data, status=status.HTTP_200_OK)
 
